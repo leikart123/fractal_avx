@@ -21,7 +21,7 @@ clean:
 	@make -C libft clean
 
 fclean: clean
-	@rm -f *.o a.out
+	@rm -f *.o $(NAME)
 	@make -C libft fclean
 
 re: fclean all
