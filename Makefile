@@ -7,7 +7,7 @@ image_utils.c init.c color.c args_parse.c threads.c \
 change_fractal.c draw_calc.c
 OBJ = $(SRC:.c=.o)
 
-all: $(NAME)
+all: $(NAME) 
 
 $(LIBRARY):
 		@make -C libft/
@@ -23,5 +23,5 @@ clean:
 fclean: clean
 	@rm -f *.o $(NAME)
 	@make -C libft fclean
-
+	@make -C minilibx-linux/ clean
 re: fclean all
