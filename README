@@ -4,3 +4,4 @@ sudo apt-get install make
 sudo apt-get install xorg openbox
 sudo apt-get install libx11-dev
 sudo apt-get install libxext-dev
+sudo apt-get install libbsd-dev
