@@ -16,6 +16,8 @@ void	fractal_settings_norme(c_image_data *img_d)
 		img_d->zoom = 240;
 		img_d->x_pos = 0;
 		img_d->y_pos = 0;
+		img_d->k_im = _mm256_set1_pd(0.11301);
+		img_d->k_re = _mm256_set1_pd(-0.74543);
 	}
 	if (img_d->fractal_num == 2)
 	{

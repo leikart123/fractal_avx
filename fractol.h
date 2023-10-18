@@ -50,7 +50,8 @@ typedef struct 					image_data
 	t_complex_double			min;
 	t_complex_double			max;
 	t_mouse_pos					mouse_pos;
-	t_complex_double			julia_k;
+	__m256d 					k_im;
+	__m256d 					k_re;
 }								c_image_data;
 
 typedef struct 
@@ -89,7 +90,6 @@ void    			get_new_image(c_mlx_data *cmd);
 int					get_color(double maxIter, double i, int palett_type);
 int     			args_parse(int argc, char **argv, c_mlx_data *cmd);
 int					mouse_move(int x, int y, c_mlx_data *cmd);
-void				change_julia_k(c_image_data *img_d, int x, int y);
 void    			choose_color(int key, c_image_data *img_d);
 void    			thread_init(c_mlx_data *cmd, c_image_data *img_d);
 void    			set_minimum(c_image_data *img_d);

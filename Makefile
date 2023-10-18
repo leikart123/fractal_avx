@@ -1,5 +1,5 @@
 NAME = fractol
-FLAGS = -lX11 -lXext -pthread -lm -L. -Wpsabi -march=native -O3 -mavx2 -mbmi2 -mpopcnt -mfma -mcx16 
+FLAGS = -lX11 -lXext -pthread -lm -L. -Wpsabi -march=native -Ofast -mavx2 -mbmi2 -mpopcnt -mfma -mcx16 
 LIBRARY = libft/libft.a minilibx-linux/libmlx_Linux.a
 HEADER = fractol.h
 SRC = fractol.c key_mouse_control.c draw.c image_changes.c \

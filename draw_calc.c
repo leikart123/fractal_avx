@@ -4,8 +4,6 @@ void    julia_calc(c_image_data *img_d, int x, int y, int max_y, int *pixels_arr
 {
 	__m256d z_re = _mm256_set1_pd(x / img_d->zoom + img_d->min.re);
     __m256d z_im = _mm256_set1_pd(y / img_d->zoom + img_d->min.im);
-    const __m256d k_im = _mm256_set1_pd(0.11301);
-    const __m256d k_re = _mm256_set1_pd(-0.74543);
     const __m256d two = _mm256_set1_pd(2.0);
     int i;
     for (i = 0; i < img_d->maxIter; i += 4) {
@@ -16,9 +14,8 @@ void    julia_calc(c_image_data *img_d, int x, int y, int max_y, int *pixels_arr
         int mask = _mm256_movemask_pd(comparison_result);
         if (mask)
             break;
-        z_im = _mm256_mul_pd(z_re, z_im);
-        z_im = _mm256_fmadd_pd(z_im, two, k_im);
-        z_re = _mm256_add_pd(_mm256_sub_pd(z2_re, z2_im), k_re);
+        z_im = _mm256_fmadd_pd(_mm256_mul_pd(z_re, z_im), two, img_d->k_im);
+        z_re = _mm256_add_pd(_mm256_sub_pd(z2_re, z2_im), img_d->k_re);
     }
     pixels_arr[(img_d->thread_size - 1 - (max_y - y)) * hei + x] = get_color(img_d->maxIter, i, img_d->palett_type);
 }
@@ -32,7 +29,7 @@ void    mandel_calc(c_image_data *img_d, int x, int y, int max_y, int *pixels_ar
 	__m256d c_im;
 	__m256d z2_re;
 	__m256d z2_im;
-
+	__m256d two;
 	double cre;
 	double cim;
 	int		color;
@@ -41,10 +38,11 @@ void    mandel_calc(c_image_data *img_d, int x, int y, int max_y, int *pixels_ar
 	z_im = _mm256_setzero_pd();
 	z2_re = _mm256_setzero_pd();
 	z2_im = _mm256_setzero_pd();
+	two = _mm256_set1_pd(2.0);
 	cre = x / img_d->zoom + img_d->min.re;
 	cim = y / img_d->zoom + img_d->min.im;
-	c_re = _mm256_setr_pd(cre,cre,cre,cre);
-	c_im = _mm256_setr_pd(cim,cim,cim,cim);
+	c_re = _mm256_set1_pd(cre);
+	c_im = _mm256_set1_pd(cim);
 	i = 0;
 	while (i < img_d->maxIter)
 	{
@@ -56,9 +54,7 @@ void    mandel_calc(c_image_data *img_d, int x, int y, int max_y, int *pixels_ar
 		if (mask)
 			break ;
 		z_im = _mm256_mul_pd(z_re, z_im);
-		__m256d two = _mm256_set1_pd(2.0);
-		z_im = _mm256_mul_pd(z_im, two);
-		z_im = _mm256_add_pd(z_im, c_im);
+		z_im = _mm256_fmadd_pd(z_im, two, c_im);
 		z_re = _mm256_sub_pd(z2_re, z2_im);
 		z_re = _mm256_add_pd(z_re, c_re);
 		i += 4;

@@ -19,12 +19,3 @@ void	change_fractal(int key, c_image_data *img_d)
 		img_d->maxIter = 64;
 	}
 }
-
-void	change_julia_k(c_image_data *img_d, int x, int y)
-{
-	if (x > 0 && x < wid && y > 0 && y < hei)
-	{	
-		img_d->julia_k.re = (x + img_d->x_pos) / (img_d->zoom + img_d->min.re);
-		img_d->julia_k.im = (y + img_d->y_pos) / (img_d->zoom + img_d->min.im);
-	}
-}
